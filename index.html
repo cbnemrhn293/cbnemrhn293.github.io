@@ -22,11 +22,40 @@
         p {
             color: #666;
         }
+        .button-container {
+            margin-top: 20px;
+        }
+        .store-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .app-store {
+            background-color: #007bff;
+        }
+        .app-store:hover {
+            background-color: #0056b3;
+        }
+        .play-store {
+            background-color: #28a745;
+        }
+        .play-store:hover {
+            background-color: #1e7e34;
+        }
     </style>
 </head>
 <body>
     <h1>Squarrel Uygulamasına Yönlendiriliyorsunuz</h1>
-    <p>Cihazınıza uygun mağazaya gidiyorsunuz...</p>
+    <p id="message">Cihazınıza uygun mağazaya gidiyorsunuz...</p>
+    <div id="button-container" class="button-container" style="display: none;">
+        <a href="https://apps.apple.com/tr/app/squarrel/id6743059655?l=tr" class="store-button app-store">App Store</a>
+        <a href="https://play.google.com/store/apps/details?id=com.emir.squarrel" class="store-button play-store">Google Play</a>
+    </div>
 
     <script>
         // Mağaza linkleri
@@ -36,16 +65,20 @@
 
         // Cihaz algılama
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const isMobile = /iPad|iPhone|iPod|android/i.test(userAgent) && !window.MSStream;
 
-        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-            // iOS cihaz
-            window.location.href = appStoreLink;
-        } else if (/android/i.test(userAgent)) {
-            // Android cihaz
-            window.location.href = playStoreLink;
+        if (isMobile) {
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                // iOS cihaz
+                window.location.href = appStoreLink;
+            } else if (/android/i.test(userAgent)) {
+                // Android cihaz
+                window.location.href = playStoreLink;
+            }
         } else {
-            // Diğer cihazlar
-            window.location.href = fallbackLink;
+            // Masaüstü cihaz
+            document.getElementById("message").textContent = "Uygulamayı indirmek için mağaza seçin:";
+            document.getElementById("button-container").style.display = "block";
         }
     </script>
 </body>
